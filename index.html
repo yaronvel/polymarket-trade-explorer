@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Polymarket Trade Explorer</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Polymarket Trade Explorer</h1>
+      <p class="subtitle">Price, hourly volume and hourly trade count for any Polymarket market, straight from the public Polymarket API.</p>
+    </header>
+
+    <main>
+      <form id="form" class="panel" autocomplete="off">
+        <div class="row">
+          <label class="grow">
+            Event
+            <span class="hint">title, slug or polymarket.com URL</span>
+            <input id="eventQuery" type="text" placeholder="Kansas Senate Election Winner" required />
+          </label>
+          <button type="button" id="searchBtn">Search</button>
+        </div>
+
+        <div class="row">
+          <label class="grow">
+            Matching events
+            <select id="eventSelect" disabled><option>Search for an event first</option></select>
+          </label>
+          <label class="grow">
+            Market
+            <span class="hint">e.g. a candidate</span>
+            <select id="marketSelect" disabled><option>—</option></select>
+          </label>
+        </div>
+
+        <div class="row">
+          <label>
+            From (UTC)
+            <input id="fromDate" type="date" />
+          </label>
+          <label>
+            To (UTC, inclusive)
+            <input id="toDate" type="date" />
+          </label>
+          <label class="checkbox">
+            <input id="includeMakers" type="checkbox" />
+            Include maker-side records
+            <span class="hint">counts each fill once per participant</span>
+          </label>
+          <div class="spacer"></div>
+          <button type="submit" id="loadBtn" class="primary" disabled>Load trades</button>
+          <button type="button" id="cancelBtn" hidden>Cancel</button>
+        </div>
+        <p class="hint">Leave the dates empty to load the full history.</p>
+      </form>
+
+      <div id="status" class="status" hidden></div>
+
+      <section id="results" hidden>
+        <div class="panel">
+          <div class="results-header">
+            <div>
+              <h2 id="marketTitle"></h2>
+              <p id="marketMeta" class="hint"></p>
+            </div>
+            <div class="actions">
+              <button type="button" id="copyLinkBtn">Copy link</button>
+              <button type="button" id="csvBtn">Download CSV</button>
+            </div>
+          </div>
+          <table id="summary"></table>
+        </div>
+
+        <div class="charts">
+          <div class="col">
+            <div class="col-title" id="colTitle0"></div>
+            <div class="chart" id="chart-0-price"></div>
+            <div class="chart" id="chart-0-volume"></div>
+            <div class="chart" id="chart-0-count"></div>
+          </div>
+          <div class="col">
+            <div class="col-title" id="colTitle1"></div>
+            <div class="chart" id="chart-1-price"></div>
+            <div class="chart" id="chart-1-volume"></div>
+            <div class="chart" id="chart-1-count"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="hint">
+      Data: <a href="https://gamma-api.polymarket.com" target="_blank" rel="noopener">Gamma API</a> (market lookup) and
+      <a href="https://data-api.polymarket.com/trades" target="_blank" rel="noopener">Data API</a> (trades). Volume is USDC
+      (shares × price). All times UTC.
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
